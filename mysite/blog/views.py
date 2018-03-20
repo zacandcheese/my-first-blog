@@ -5,7 +5,6 @@ from .form import PostForm
 from django.shortcuts import redirect
 
 def post_list(request):
-    #posts = Post.objects.filter(published_date=timezone.now()).order_by('published_date')
 	posts = Post.objects.all()
 	return render(request, 'blog/post_list.html', {'posts':posts})
 
