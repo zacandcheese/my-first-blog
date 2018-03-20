@@ -3,5 +3,7 @@
 __pycache__
 myvenv
 db.sqlite3
+/mysite/*cpython-36.pyc
+
 /static
 .DS_Store
