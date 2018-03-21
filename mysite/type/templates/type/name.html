@@ -1,0 +1,12 @@
+<form action='' method='post'>
+	{% csrf_token %}
+	<p><label for="id_form1">Author:</label>{{form.author}}</p>
+			
+	<p><label for="id_form0">charLib:</label>
+	<input type="text" name="id_form0" id="id_form0" value = "{{charLib}}" required/></p>
+	<p><label for="id_form2">timeLib:</label>
+	<input type="text" name="id_form2" id="id_form2" value = "{{timeLib}}" required/></p>
+			
+	
+	<button type="submit" class="save btn btn-default">Save</button>	
+</form>

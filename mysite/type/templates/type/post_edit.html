@@ -1,0 +1,62 @@
+
+{% block content %}
+	<h1>New post</h1>
+	<form action='' method='post'>
+		{% csrf_token %}
+		<body>
+			<p>This example uses the addEventListener() method to attach a "keypress" event to an input element.</p>
+
+			<p>Press a key inside the text field to set a red background color.</p>
+
+			<p id="p1">Words:</p>
+			<p id="p3">KeyCode:</p>
+			<p id="p4">TEST</p>
+			<input type="hidden" id="p5" value = "">
+			<input type="text" id="demo">
+			<p><label for="id_form1">Author:</label>{{form.author}}</p>
+			
+			<p><label for="charLib">charLib:</label>
+			<input type="hidden" name="charLib" id="charLib" value = "{{charLib}}" required/></p>
+			<p><label for="timeLib">timeLib:</label>
+			<input type="hidden" name="timeLib" id="timeLib" value = "{{timeLib}}" required/></p>
+			
+			<script>
+				document.getElementById("demo").addEventListener("keypress", myEventHandler);
+				function myFunction() {
+					document.getElementById("demo").style.backgroundColor = "red";
+				}
+				function myEventHandler(e){
+					//e.preventDefault();
+					var keyCode = e.keyCode;
+					var b = e.key;
+					if(keyCode == 97){
+						console.log("You pressed W!");
+						//alert("You pressed W!");
+						document.getElementById("demo").style.backgroundColor = "red";
+
+					}
+					else if(keyCode == 8){
+						alert("backspace");
+					}
+					else if(keyCode == 49){
+						document.getElementById("p4").innerHTML = document.getElementById("p5").value;
+					}
+					else{
+						document.getElementById("demo").style.backgroundColor = "white";
+					}
+
+					document.getElementById("p3").innerHTML = keyCode;
+					document.getElementById("timeLib").value += (performance.now())+", ";
+					document.getElementById("charLib").value += (String.fromCharCode(keyCode))+", ";
+					//document.getElementById("p1").innerHTML = (performance.now());
+					//document.getElementById("demo").style.backgroundColor = "red";
+				}
+			</script>
+		
+			
+			
+			
+			<button type="submit" class="save btn btn-default">Save</button>
+		</body>
+	</form>
+{% endblock %}
