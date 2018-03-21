@@ -1,7 +1,7 @@
 from django.db import models
 
 class Info(models.Model):
-    author = models.CharField()
+    author = models.CharField(max_length = 200)
     charLib = models.TextField()
     timeLib = models.TextField()
 
@@ -10,3 +10,4 @@ class Info(models.Model):
 
     def __str__(self):
         return self.author
+		
