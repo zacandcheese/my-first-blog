@@ -1,9 +1,29 @@
-{% extends 'type/base.html' %}
+
 
 {% block content %}
-    <div class="post">
-		<a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-        <h1>{{ post.author }}</h1>
-        <p>{{ post.charLib|linebreaksbr }}</p>
-    </div>
+<body>
+
+<h2>{{post.author}}</h2>
+
+<input type="hidden" id="times" value="{{times}}">
+<input type="hidden" id="combo" value="{{combo}}">
+
+<p id="demo"></p>
+
+<script>
+var fruits, text, fLen, i;
+
+fruits = document.getElementById("combo").value.split(",");
+vegies = document.getElementById("times").value.split(",");
+
+fLen = fruits.length;
+text = "<ul>";
+for (i = 0; i < fLen; i++) {
+    text += "<li>" + fruits[i] +" "+ vegies[i]+"</li>";
+}
+text += "</ul>";
+document.getElementById("demo").innerHTML = text;
+</script>
+
+</body>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Info
+from .models import Summary
 from .form import PostForm
 from django.shortcuts import redirect
 
@@ -9,8 +10,19 @@ def post_list(request):
 	return render(request, 'type/post_list.html', {'posts':people})
 
 def post_detail(request, pk):
-	post = get_object_or_404(Info, pk=pk)
-	return render(request, 'type/post_detail.html', {'post': post})
+	i = 0
+	final = None
+	for e in Summary.objects.all():
+		i+=1
+		if(int(i) == int(pk)):
+			final = e
+	if(final == None):
+		final = Summary.objects.first()
+			
+	print("the obj:",final.comboListText.split(','))
+	combo=final.comboListText
+	times=final.medListText
+	return render(request, 'type/post_detail.html', {'post': final,'combo':combo,'times':times,})
 
 def post_new(request):
     if request.method == "POST":
@@ -30,7 +42,8 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            print(post.author)
+            return redirect('get_name', pk=post.pk)
     else:
         form = PostForm(instance=post)
     return render(request, 'type/post_edit.html', {'form': form})
@@ -46,22 +59,30 @@ def post_publish(request, pk):
 	
 from .form import NameForm
 
-def get_name(request):
+def get_name(request, pk):
     # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.save()
-            return redirect('post_detail', pk=post.pk)
+	i = 0
+	final = None
+	for e in Info.objects.all():
+		i+=1
+		if(int(i) == int(pk)):
+			final = e
+	
+	if request.method == 'POST':
+		# create a form instance and populate it with data from the request:
+		form = NameForm(request.POST)
+		# check whether it's valid:
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.save()
+			return redirect('post_detail', pk=post.pk)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return render(request, 'type/name.html', {'form': form})
+	# if a GET (or any other method) we'll create a blank form
+	else:
+		form = NameForm()
+	author = final.author
+	l1,l2 = Summary.getData(final)
+	return render(request, 'type/name.html', {'form': form,'combo':l1,'times':l2,'author':author})
 	
 def validate(request):
 	list = Info.objects.all()

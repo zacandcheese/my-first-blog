@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import Info
+from .models import Info, Summary
 
 class PostForm(forms.ModelForm):
 	class Meta:
@@ -17,10 +17,7 @@ class PostForm(forms.ModelForm):
 				'max_length': _("This writer's name is too long."),
 			},
 		}
-class NameForm(forms.Form):
-	model = Info
-	Info.author = forms.CharField(max_length = 200)
-	Info.charLib = forms.CharField(max_length = 20000)
-	Info.timeLib = forms.CharField(max_length = 20000)
-	def save(commit):
-		Input.publish(commit)
+class NameForm(forms.ModelForm):
+	class Meta:
+		model = Summary
+		fields = ('author','comboListText','medListText',)
