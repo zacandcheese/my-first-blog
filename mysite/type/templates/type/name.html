@@ -1,13 +1,25 @@
-<form action='' method='post'>
-	{% csrf_token %}
-	<p><label for="author">Author:</label>
-	<input type="text" name="author" id="author" value = "{{author}}" required/></p>
-	
-	<p><label for="comboListText">charLib:</label>
-	<input type="text" name="comboListText" id="comboListText" value = "{{combo}}" required/></p>
-	<p><label for="medListText">medListText:</label>
-	<input type="text" name="medListText" id="medListText" value = "{{times}}" required/></p>
-			
-	<button type="submit" class="save btn btn-default">Save</button>	
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Zach's Keyboard Fun</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+	</head>
+	<form action='' method='post'>
+		{% csrf_token %}
+		<p><label for="author">Author:</label>
+		<input type="text" name="author" id="author" value = "{{author}}" required/></p>
+		
+		<p><label for="comboListText">charLib:</label>
+		<input type="text" name="comboListText" id="comboListText" value = "{{combo}}" required/></p>
+		<p><label for="medListText">medListText:</label>
+		<input type="text" name="medListText" id="medListText" value = "{{times}}" required/></p>
+		<p><label for="ID">ID:</label>
+		<input type="text" name="ID" id="ID" value = "{{newId}}" required/></p>
+				
+		<button type="submit" class="save btn btn-default">Save</button>	
 
-</form>
+	</form>
+</html>

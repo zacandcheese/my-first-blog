@@ -10,18 +10,22 @@ def post_list(request):
 	return render(request, 'type/post_list.html', {'posts':people})
 
 def post_detail(request, pk):
-	i = 0
 	final = None
+	print("pk is this",pk)
 	for e in Summary.objects.all():
-		i+=1
-		if(int(i) == int(pk)):
+		if(int(e.ID) == int(pk)):
+			print(e.author)
 			final = e
+		elif(e.author == pk):
+			final = e
+		else:
+			print(e.author)
 	if(final == None):
 		final = Summary.objects.first()
-			
-	print("the obj:",final.comboListText.split(','))
+		
 	combo=final.comboListText
 	times=final.medListText
+	
 	return render(request, 'type/post_detail.html', {'post': final,'combo':combo,'times':times,})
 
 def post_new(request):
@@ -30,7 +34,7 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('get_name', pk=post.pk)
     else:
         form = PostForm()
     return render(request, 'type/post_edit.html', {'form': form})
@@ -61,11 +65,13 @@ from .form import NameForm
 
 def get_name(request, pk):
     # if this is a POST request we need to process the form data
-	i = 0
 	final = None
+	for e in Summary.objects.all():
+		if(int(e.id) == int(pk)):
+			return redirect('post_detail', pk=pk)
+			
 	for e in Info.objects.all():
-		i+=1
-		if(int(i) == int(pk)):
+		if(int(e.id) == int(pk)):
 			final = e
 	
 	if request.method == 'POST':
@@ -81,8 +87,8 @@ def get_name(request, pk):
 	else:
 		form = NameForm()
 	author = final.author
-	l1,l2 = Summary.getData(final)
-	return render(request, 'type/name.html', {'form': form,'combo':l1,'times':l2,'author':author})
+	l1,l2,l3 = Summary.getData(final)
+	return render(request, 'type/name.html', {'form': form,'combo':l1,'times':l2,'author':author,'newId':l3})
 	
 def validate(request):
 	list = Info.objects.all()
