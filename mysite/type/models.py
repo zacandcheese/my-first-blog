@@ -6,7 +6,6 @@ class Info(models.Model):
     author = models.CharField(max_length = 200)
     charLib = models.TextField()
     timeLib = models.TextField()
-
     def publish(self):
         self.save()
 
@@ -14,10 +13,12 @@ class Info(models.Model):
         return self.author
 		
 class Summary(models.Model) :
+	ID = models.TextField()
 	author = models.TextField()
 	comboListText = models.TextField();
 	medListText =  models.TextField();
 	def getData(obj):
+		newId = obj.id
 		infoObject = obj
 		comboList = ""
 		medList = ""
@@ -64,7 +65,7 @@ class Summary(models.Model) :
 			pass
 		print(comboList)
 		print(medList)
-		return(comboList,medList)
+		return(comboList,medList,newId)
 	def publish(self):
 		self.save()
 	def __str__(self):
