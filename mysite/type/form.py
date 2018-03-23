@@ -20,4 +20,4 @@ class PostForm(forms.ModelForm):
 class NameForm(forms.ModelForm):
 	class Meta:
 		model = Summary
-		fields = ('author','comboListText','medListText','ID')
+		fields = ('author','comboListText','medListText','newID')

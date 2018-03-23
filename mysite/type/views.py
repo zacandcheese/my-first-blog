@@ -13,7 +13,7 @@ def post_detail(request, pk):
 	final = None
 	print("pk is this",pk)
 	for e in Summary.objects.all():
-		if(int(e.ID) == int(pk)):
+		if(int(e.newID) == int(pk)):
 			print(e.author)
 			final = e
 		elif(e.author == pk):
@@ -67,7 +67,7 @@ def get_name(request, pk):
     # if this is a POST request we need to process the form data
 	final = None
 	for e in Summary.objects.all():
-		if(int(e.id) == int(pk)):
+		if(int(e.newID) == int(pk)):
 			return redirect('post_detail', pk=pk)
 			
 	for e in Info.objects.all():

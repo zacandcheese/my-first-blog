@@ -13,7 +13,7 @@ class Info(models.Model):
         return self.author
 		
 class Summary(models.Model) :
-	ID = models.TextField()
+	newID = models.TextField()
 	author = models.TextField()
 	comboListText = models.TextField();
 	medListText =  models.TextField();

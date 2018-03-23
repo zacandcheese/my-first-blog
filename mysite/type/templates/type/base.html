@@ -18,7 +18,7 @@
                 <div class="col-md-8">
                 {% for post in posts %}
                     <div class="post">
-                        <h1><a href="{% url 'cs' post.id %}" >{{ post.author }}</a></h1>
+                        <h1><a href="{% url 'get_name' post.id %}" >{{ post.author }}</a></h1>
 						<p>{{ post.charLib|linebreaksbr }}</p>
 						<p>{{ post.timeLib|linebreaksbr }}</p>
                     </div>
