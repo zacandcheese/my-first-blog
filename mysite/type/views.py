@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import Info
-from .models import Summary
-from .form import PostForm
+from .models import Info, Summary, Applying, ApplyingAs
+from .form import PostForm, ApplyForm, ChoiceForm
+from django.views.generic import FormView
+from django.http import HttpResponse
 from django.shortcuts import redirect
 
 def post_list(request):
@@ -37,7 +38,8 @@ def post_new(request):
             return redirect('get_name', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'type/post_edit.html', {'form': form})
+        passage = "you took care of the other bare man. you gave the bare man ate a hare. you are mean"
+    return render(request, 'type/post_edit.html', {'form': form,'passage':passage})
 
 def post_edit(request, pk):
     post = get_object_or_404(Info, pk=pk)
@@ -91,5 +93,40 @@ def get_name(request, pk):
 	return render(request, 'type/name.html', {'form': form,'combo':l1,'times':l2,'author':author,'newId':l3})
 	
 def validate(request):
-	list = Info.objects.all()
+	user = Applying.objects.last()
+	list = Summary.objects.all()
+	answer = Applying.getAnswer(user, list)
+	return render(request, 'type/answer.html', {'answer':answer})
 	
+	
+def apply_new(request):
+    if request.method == "POST":
+        form = ApplyForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            return redirect('validate')
+    else:
+        form = ApplyForm()
+        who = ApplyingAs.objects.last()
+        passage = Applying.getMostUniqueCombo(Info.objects.filter(author=who.choice)[0],Summary.objects.all())
+    return render(request, 'type/post_edit.html', {'form': form,'passage':passage,'who':who.choice})
+
+class PostChoicesPage(FormView):
+	template_name = 'choice.html'
+	success_url = '/post/applying/'
+	form_class = ChoiceForm
+	
+	def form_valid(self, form):
+		return HttpResponse("Sweet.")
+		
+def choice_new(request):
+	if request.method == "POST":
+		form = ChoiceForm(request.POST)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.save()
+			return redirect('apply')
+	else:
+		form = ChoiceForm()
+	return render(request, 'type/choice.html', {'form': form})
