@@ -1,0 +1,24 @@
+{% comment %}
+
+This is the display for the 'Choice' form.
+
+URL: choice/
+Model: ApplyingAs
+ModelForm: ChoiceForm
+View: PostChoicesPage [FormView]
+View Return:HttpResponse: message - "Sweet."
+
+{% endcomment %}
+{% block content %}
+<form action = "/choice/" method="post">
+	{%csrf_token %}
+	<!--choices-->
+	<div class "fieldWrapper">
+		<label for="id_category">Choices</label>
+		{{form.choice}}
+	</div>
+	<button type="submit">
+		<i class="fa fa-thumb-tack"></i>Submit
+	</button>
+</form>
+{% endblock %}
