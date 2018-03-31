@@ -27,8 +27,13 @@ class NameForm(forms.ModelForm):
 		model = Summary
 		fields = ('author','comboListText','medListText','newID')
 
-		
 class ChoiceForm(forms.ModelForm):
 	class Meta:
 		model = ApplyingAs
 		fields = ('choice',)
+	def __init__(self, *args, **kwargs):
+		super(ChoiceForm, self).__init__(*args, **kwargs)
+		NAMES = []
+		for n in Summary.objects.all():
+			NAMES.append((str(n),(n)))
+		self.fields['choice'] = forms.ChoiceField(choices = NAMES)

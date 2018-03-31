@@ -171,4 +171,7 @@ class Applying(models.Model):
 		
 class ApplyingAs(models.Model):
 	NAMES = [(n.author, n.author) for n in Summary.objects.all()]
-	choice = models.CharField(max_length = 100,choices = NAMES)
+	choice = models.CharField(max_length = 100)
+	
+	def __str__(self):
+		return self.choice
