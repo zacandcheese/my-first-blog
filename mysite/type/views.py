@@ -109,6 +109,7 @@ def apply_new(request):
     else:
         form = ApplyForm()
         who = ApplyingAs.objects.last()
+        print(who, who.choice)
         passage = Applying.getMostUniqueCombo(Info.objects.filter(author=who.choice)[0],Summary.objects.all())
     return render(request, 'type/post_edit.html', {'form': form,'passage':passage,'who':who.choice})
 
