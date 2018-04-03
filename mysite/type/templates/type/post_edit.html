@@ -10,9 +10,11 @@
 			<p>You are applying as {{who}}</p>
 			<p id="p1">Words:</p>
 			<p id="p3">KeyCode:</p>
-			<p id="p4">{{passage}}</p>
+			<p id="p4" >{{passage}}</p>
+			<input type="hidden" id="p6" value = "hello"></input>
 			<input type="hidden" id="p5" value = "">
-			<input type="text" id="demo">
+			<p><label for="charLib" >Type Here: </label>
+			<input type="text" id="demo" value = ""></p>
 			<p><label for="id_form1">Author:</label>{{form.author}}</p>
 			
 			<p><label for="charLib">charLib:</label>
@@ -21,12 +23,14 @@
 			<input type="hidden" name="timeLib" id="timeLib" value = "{{timeLib}}" required/></p>
 			
 			<script>
+				var i = 1;
 				document.getElementById("demo").addEventListener("keypress", myEventHandler);
 				function myFunction() {
 					document.getElementById("demo").style.backgroundColor = "red";
 				}
 				function myEventHandler(e){
 					//e.preventDefault();
+					
 					var keyCode = e.keyCode;
 					var b = e.key;
 					if(keyCode == 97){
@@ -35,8 +39,13 @@
 						document.getElementById("demo").style.backgroundColor = "red";
 
 					}
-					else if(keyCode == 8){
-						alert("backspace");
+					else if(keyCode == 46){
+						document.getElementById("demo").style.backgroundColor = "green";
+						document.getElementById("demo").value = "";
+					    document.getElementById("p4").innerHTML = "{{passage}}".split(".")[i];
+						
+						i+=1;
+					
 					}
 					else if(keyCode == 49){
 						document.getElementById("p4").innerHTML = document.getElementById("p5").value;
@@ -44,7 +53,7 @@
 					else{
 						document.getElementById("demo").style.backgroundColor = "white";
 					}
-
+					
 					document.getElementById("p3").innerHTML = keyCode;
 					document.getElementById("timeLib").value += (performance.now())+",";
 					document.getElementById("charLib").value += (String.fromCharCode(keyCode))+",";
