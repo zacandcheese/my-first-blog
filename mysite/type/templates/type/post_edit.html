@@ -1,14 +1,11 @@
 
 {% block content %}
-	<h1>New post</h1>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<h1><a href="/">COLLECTING DATA</a></h1>
 	<form action='' method='post'>
 		{% csrf_token %}
 		<body>
-			<p>This example uses the addEventListener() method to attach a "keypress" event to an input element.</p>
-
-			<p>Press a key inside the text field to set a red background color.</p>
-			<p>You are applying as {{who}}</p>
-			<p id="p1">Words:</p>
+			<p id="p1"></p>
 			<p id="p3">KeyCode:</p>
 			<p id="p4" >{{passage}}</p>
 			<input type="hidden" id="p6" value = "hello"></input>
@@ -17,13 +14,14 @@
 			<input type="text" id="demo" value = ""></p>
 			<p><label for="id_form1">Author:</label>{{form.author}}</p>
 			
-			<p><label for="charLib">charLib:</label>
+			<p><label for="charLib"></label>
 			<input type="hidden" name="charLib" id="charLib" value = "{{charLib}}" required/></p>
-			<p><label for="timeLib">timeLib:</label>
+			<p><label for="timeLib"></label>
 			<input type="hidden" name="timeLib" id="timeLib" value = "{{timeLib}}" required/></p>
 			
 			<script>
 				var i = 1;
+				var period = false;
 				document.getElementById("demo").addEventListener("keypress", myEventHandler);
 				function myFunction() {
 					document.getElementById("demo").style.backgroundColor = "red";
@@ -33,17 +31,12 @@
 					
 					var keyCode = e.keyCode;
 					var b = e.key;
-					if(keyCode == 97){
-						console.log("You pressed W!");
-						//alert("You pressed W!");
-						document.getElementById("demo").style.backgroundColor = "red";
-
-					}
-					else if(keyCode == 46){
+					
+					if(keyCode == 46){
 						document.getElementById("demo").style.backgroundColor = "green";
 						document.getElementById("demo").value = "";
-					    document.getElementById("p4").innerHTML = "{{passage}}".split(".")[i];
-						
+					    document.getElementById("p4").innerHTML = "{{passage}}".split(".")[i]+".";
+						period = true;
 						i+=1;
 					
 					}
@@ -51,6 +44,10 @@
 						document.getElementById("p4").innerHTML = document.getElementById("p5").value;
 					}
 					else{
+						if(period){
+							document.getElementById("demo").value = "";
+							period = false;
+						}
 						document.getElementById("demo").style.backgroundColor = "white";
 					}
 					

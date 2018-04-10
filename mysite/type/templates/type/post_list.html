@@ -4,7 +4,7 @@
     {% for post in posts %}
         <div class="post">
             <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.author }}</a></h1>
-            <p>{{ post.charLib|linebreaksbr }}</p>
+            
         </div>
     {% endfor %}
 {% endblock %}
