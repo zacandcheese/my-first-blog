@@ -31,7 +31,7 @@ class Summary(models.Model) :
 			for i in range(len(charDict)):
 				totalSentence += charDict[i]
 				
-			print(totalSentence)
+			#print(totalSentence)
 
 			listOfTuples = []
 			#cycle all letters
@@ -54,7 +54,7 @@ class Summary(models.Model) :
 											allTimes.append(float(intDict[(m+len(tuple)-1)])-float(intDict[(m)]))
 											
 									#ADD IT TO FILE
-									if len(allTimes)>=3:
+									if (len(allTimes)>=4 and (len(tuple)>2)):
 										listOfTuples.append(tuple)
 										print(tuple,len(allTimes),statistics.mean(allTimes),statistics.median(allTimes), statistics.variance(allTimes))
 										comboList += str(tuple)+", "
@@ -63,8 +63,8 @@ class Summary(models.Model) :
 								#list of every appearances, time for each
 		except(AttributeError):	
 			pass
-		print(comboList)
-		print(medList)
+		#print(comboList)
+		#print(medList)
 		return(comboList,medList,newId)
 	def publish(self):
 		self.save()
@@ -80,10 +80,15 @@ class Applying(models.Model):
 			tuple = " "+tuple
 		flag = False
 		count = 0
+		
 		for file in list:
+			first = 0
 			for tupleC in file.comboListText.split(","):
+				if(first == 0):
+					tupleC = " "+tupleC
 				if(tupleC == tuple):
 					count += 1
+				first+=1
 		if(count == len(list)):
 			flag = True
 		print(tuple, flag)
@@ -110,26 +115,40 @@ class Applying(models.Model):
 		#Have the list of possible tuples
 		tupleList = []
 		for tuple in megaList:
+			#print("IN MEGALIST")
 			num = 0
 			for t in range(len(comboList.split(","))):
-				if(comboList.split(",")[t] == tuple):
+				tuple2 = comboList.split(",")[t]
+				if(t==0):
+					tuple2=" "+tuple2
+				if(tuple2 == tuple):
 					num = medList.split(",")[t]
+			
 			peoplediff=[]		
 			for person in list:
 				for t in range(len(person.comboListText.split(","))):
-					if(person.comboListText.split(",")[t] == tuple):
+					tuple2 = person.comboListText.split(",")[t]
+					if(t==0):
+						tuple2=" "+tuple2
+					if(tuple2 == tuple):
 						num1 = person.medListText.split(",")[t]
 						#print(person, tuple, num1)
 						peoplediff.append(abs(float(num1) - float(num)))
 			dict = {}
 			dict['name'] = tuple
-			dict['diff'] = min(peoplediff)
+			peoplediff = sorted(peoplediff)
+			try:
+				dict['diff'] = min(peoplediff[1:])
+			except:
+				dict['diff'] = min(peoplediff)
+			print(tuple, peoplediff)
 			tupleList.append(dict)
+			
 
 		newlist = sorted(tupleList, key=lambda k: k['diff'], reverse = True)
-		#print(newlist)
+		print(newlist)
 		returnList = [newlist[0]['name'],newlist[1]['name'],newlist[2]['name']]
-		print("this is what is returning", returnList)
+		#print("this is what is returning", returnList)
 		return(returnList)
 	def whatTime(user, tuple,comboList,medList):
 		
@@ -158,12 +177,18 @@ class Applying(models.Model):
 			dict['score'] = score
 			personList.append(dict)
 		newlist = sorted(personList, key=lambda k: k['score'], reverse = False)
-		
+		M = 0
 		print(newlist)
-		if(newlist[0]['score']<300):#For ms
-			return("you are "+ newlist[0]['name'])
+		print(ApplyingAs.objects.last())
+		for i in newlist:
+			if (i['name']==ApplyingAs.objects.last().choice):
+				break
+			M+=1
+		
+		if(newlist[M]['score']<300):#For ms
+			return("You are "+ newlist[M]['name'])
 		else:
-			return("you do no match")
+			return("Try Again")
 	def publish(self):
 		self.save()
 	def __str__(self):
