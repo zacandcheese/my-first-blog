@@ -150,6 +150,18 @@ class Applying(models.Model):
 		returnList = [newlist[0]['name'],newlist[1]['name'],newlist[2]['name']]
 		#print("this is what is returning", returnList)
 		return(returnList)
+	def getSentences(comboList):
+		returnList = ""
+		for combo in comboList:
+			if(combo == " all"):
+				returnList+=("last fall i called the tall man in the hall of the mall. ")
+			elif(combo == " the"):
+				returnList+=("together, they are the only other group out there. ")
+			elif(combo == " and"):
+				returnList+=("I hand stand on the land that is grand and not an island. ")
+			else:
+				returnList+=(combo)
+		return (returnList)
 	def whatTime(user, tuple,comboList,medList):
 		
 		i = 0

@@ -112,8 +112,9 @@ def apply_new(request):
         form = ApplyForm()
         who = ApplyingAs.objects.last()
         print(who, who.choice)
-        passage = Applying.getMostUniqueCombo(Info.objects.filter(author=who.choice)[0],Summary.objects.all())
-    return render(request, 'type/post_edit.html', {'form': form,'passage':passage,'who':who.choice})
+        combos = Applying.getMostUniqueCombo(Info.objects.filter(author=who.choice)[0],Summary.objects.all())
+        passage = Applying.getSentences(combos)
+        return render(request, 'type/post_edit.html', {'form': form,'passage':passage,'who':who.choice})
 
 class PostChoicesPage(FormView):
 	template_name = 'choice.html'
