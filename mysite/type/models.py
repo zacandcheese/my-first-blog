@@ -160,7 +160,7 @@ class Applying(models.Model):
 			elif(combo == " and"):
 				returnList+=("I hand stand on the land that is grand and not an island. ")
 			else:
-				returnList+=(combo)
+				returnList+=((combo+" ")*5+".")
 		return (returnList)
 	def whatTime(user, tuple,comboList,medList):
 		
@@ -183,9 +183,13 @@ class Applying(models.Model):
 				timesList = (obj.medListText.split(","))
 				combosList = (obj.comboListText.split(","))
 				for i in range(len(timesList)):
+					
 					if combosList[i] == tuple:
-						print(timesList[i], Applying.whatTime(user,tuple,comboList,medList))
+						print(tuple, timesList[i], Applying.whatTime(user,tuple,comboList,medList))
 						score+=abs(float(timesList[i])-float(Applying.whatTime(user,tuple,comboList,medList)))
+					if " "+combosList[i] == tuple:
+						print(tuple, timesList[i],medList.split(",")[0])
+						score+=abs(float(timesList[i])-float(medList.split(",")[0]))
 			dict['name'] = obj.author
 			dict['obj'] = obj
 			dict['score'] = score
