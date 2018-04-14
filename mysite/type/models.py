@@ -63,8 +63,8 @@ class Summary(models.Model) :
 								#list of every appearances, time for each
 		except(AttributeError):	
 			pass
-		#print(comboList)
-		#print(medList)
+		print(comboList)
+		print(medList)
 		return(comboList,medList,newId)
 	def publish(self):
 		self.save()
@@ -178,11 +178,13 @@ class Applying(models.Model):
 		for obj in list:
 			dict = {}
 			score = 0
+			print(obj)
 			for tuple in listOfWords:
 				timesList = (obj.medListText.split(","))
 				combosList = (obj.comboListText.split(","))
 				for i in range(len(timesList)):
 					if combosList[i] == tuple:
+						print(timesList[i], Applying.whatTime(user,tuple,comboList,medList))
 						score+=abs(float(timesList[i])-float(Applying.whatTime(user,tuple,comboList,medList)))
 			dict['name'] = obj.author
 			dict['obj'] = obj
@@ -197,7 +199,7 @@ class Applying(models.Model):
 				break
 			M+=1
 		
-		if(newlist[M]['score']<300):#For ms
+		if(newlist[M]['score']<100):#For ms
 			return("You are "+ newlist[M]['name'])
 		else:
 			return("Try Again")
