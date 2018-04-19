@@ -203,7 +203,7 @@ class Applying(models.Model):
 				break
 			M+=1
 		
-		if(newlist[M]['score']<600):#For ms
+		if(newlist[M]['score']<700):#For ms
 			return("You are "+ newlist[M]['name'])
 		else:
 			return("Try Again")
