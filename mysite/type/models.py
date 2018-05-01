@@ -175,24 +175,39 @@ class Applying(models.Model):
 		comboList,medList,newId = Summary.getData(user)
 		listOfWords = Applying.getMostUniqueCombo(user,list)
 		personList = []
+		flag = False
 		for obj in list:
 			dict = {}
 			score = 0
+			
 			print(obj)
 			for tuple in listOfWords:
-				timesList = (obj.medListText.split(","))
-				combosList = (obj.comboListText.split(","))
-				for i in range(len(timesList)):
-					
-					if combosList[i] == tuple:
-						print(tuple, timesList[i], Applying.whatTime(user,tuple,comboList,medList))
-						score+=abs(float(timesList[i])-float(Applying.whatTime(user,tuple,comboList,medList)))
-					if " "+combosList[i] == tuple:
-						print(tuple, timesList[i],medList.split(",")[0])
-						score+=abs(float(timesList[i])-float(medList.split(",")[0]))
+				if(not (tuple) == (listOfWords[listOfWords.index(tuple)])):
+					print("BLAHHHHHH");
+				else:	
+					timesList = (obj.medListText.split(","))
+					combosList = (obj.comboListText.split(","))
+					for i in range(len(timesList)):
+						
+						if combosList[i] == tuple:
+							print(tuple, timesList[i], Applying.whatTime(user,tuple,comboList,medList))
+							
+							score+=abs(float(timesList[i])-float(Applying.whatTime(user,tuple,comboList,medList)))
+							if(not flag):
+								if(abs(float(Applying.whatTime(user,tuple,comboList,medList)))==0):
+									flag = True
+							
+						if " "+combosList[i] == tuple:
+							print(tuple, timesList[i],medList.split(",")[0])
+							score+=abs(float(timesList[i])-float(medList.split(",")[0]))
+							if(not flag):
+								if(abs(float(Applying.whatTime(user,tuple,comboList,medList)))==0):
+									flag = True
+							
 			dict['name'] = obj.author
 			dict['obj'] = obj
 			dict['score'] = score
+			dict['flag'] = flag
 			personList.append(dict)
 		newlist = sorted(personList, key=lambda k: k['score'], reverse = False)
 		M = 0
@@ -202,8 +217,9 @@ class Applying(models.Model):
 			if (i['name']==ApplyingAs.objects.last().choice):
 				break
 			M+=1
-		
-		if(newlist[M]['score']<700):#For ms
+		if(newlist[M]['flag'] or newlist[M]['score'] == 0):
+			return("You didn't do it correctly.")
+		elif(newlist[M]['score']<150):#For ms
 			return("You are "+ newlist[M]['name'])
 		else:
 			return("Try Again")
