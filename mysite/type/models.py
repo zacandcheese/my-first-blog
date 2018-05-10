@@ -56,15 +56,15 @@ class Summary(models.Model) :
 									#ADD IT TO FILE
 									if (len(allTimes)>=4 and (len(tuple)>2)):
 										listOfTuples.append(tuple)
-										print(tuple,len(allTimes),statistics.mean(allTimes),statistics.median(allTimes), statistics.variance(allTimes))
+										#print(tuple,len(allTimes),statistics.mean(allTimes),statistics.median(allTimes), statistics.variance(allTimes))
 										comboList += str(tuple)+", "
 										medList += str(str(statistics.median(allTimes)))+", "
 								#The entire sentence of what they wrote
 								#list of every appearances, time for each
 		except(AttributeError):	
 			pass
-		print(comboList)
-		print(medList)
+		#print(comboList)
+		#print(medList)
 		return(comboList,medList,newId)
 	def publish(self):
 		self.save()
@@ -91,15 +91,17 @@ class Applying(models.Model):
 				first+=1
 		if(count == len(list)):
 			flag = True
-		print(tuple, flag)
+		#print(tuple, flag)
 		return flag
 	def getMostUniqueCombo(name, list):
-		print(name)
-		print("List of People: ", list)#FIXME
+		#print(name)
+		#print("List of People: ", list)#FIXME
 		megaList = []
 		compareList = []
-		flag = True #print if name is not in list.
+		flag = True #print if name is not in list
+		
 		comboList,medList,newId = Summary.getData(name)
+		print("Getting most Unique Combo", name)
 		for line in comboList.split(","):
 			if(not line[0] == " "):
 				line = " "+line
@@ -141,12 +143,12 @@ class Applying(models.Model):
 				dict['diff'] = min(peoplediff[1:])
 			except:
 				dict['diff'] = min(peoplediff)
-			print(tuple, peoplediff)
+			#print(tuple, peoplediff)
 			tupleList.append(dict)
 			
 
 		newlist = sorted(tupleList, key=lambda k: k['diff'], reverse = True)
-		print(newlist)
+		#print(newlist)
 		returnList = [newlist[0]['name'],newlist[1]['name'],newlist[2]['name']]
 		#print("this is what is returning", returnList)
 		return(returnList)
@@ -173,7 +175,10 @@ class Applying(models.Model):
 		return(0)
 	def getAnswer(user, list):
 		comboList,medList,newId = Summary.getData(user)
-		listOfWords = Applying.getMostUniqueCombo(user,list)
+		print("This is the Object", ApplyingAs.objects.last().choice)
+		nme = Summary.objects.get(author=ApplyingAs.objects.last().choice)
+		NAME = Info.objects.get(author = ApplyingAs.objects.last().choice)
+		listOfWords = Applying.getMostUniqueCombo(NAME,list)
 		personList = []
 		flag = False
 		for obj in list:
@@ -190,7 +195,7 @@ class Applying(models.Model):
 					for i in range(len(timesList)):
 						
 						if combosList[i] == tuple:
-							print(tuple, timesList[i], Applying.whatTime(user,tuple,comboList,medList))
+							#print(tuple, timesList[i], Applying.whatTime(user,tuple,comboList,medList))
 							
 							score+=abs(float(timesList[i])-float(Applying.whatTime(user,tuple,comboList,medList)))
 							if(not flag):
@@ -198,11 +203,12 @@ class Applying(models.Model):
 									flag = True
 							
 						if " "+combosList[i] == tuple:
-							print(tuple, timesList[i],medList.split(",")[0])
+							#print(tuple, timesList[i],medList.split(",")[0])
 							score+=abs(float(timesList[i])-float(medList.split(",")[0]))
 							if(not flag):
 								if(abs(float(Applying.whatTime(user,tuple,comboList,medList)))==0):
 									flag = True
+			print("Complete")
 							
 			dict['name'] = obj.author
 			dict['obj'] = obj
@@ -212,7 +218,6 @@ class Applying(models.Model):
 		newlist = sorted(personList, key=lambda k: k['score'], reverse = False)
 		M = 0
 		print(newlist)
-		print(ApplyingAs.objects.last())
 		for i in newlist:
 			if (i['name']==ApplyingAs.objects.last().choice):
 				break
