@@ -224,7 +224,7 @@ class Applying(models.Model):
 			M+=1
 		if(newlist[M]['flag'] or newlist[M]['score'] == 0):
 			return("You didn't do it correctly.")
-		elif(newlist[M]['score']<150):#For ms
+		elif(newlist[M]['score']<300):#For ms
 			return("You are "+ newlist[M]['name'])
 		else:
 			return("Try Again")
